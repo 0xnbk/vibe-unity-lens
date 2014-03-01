@@ -14,9 +14,9 @@ class VibeLens(SingleScopeLens):
     class Meta:
         name = 'vibe'
         description = 'Vibe Lens'
-        search_hint = 'Search Vibe'
+        search_hint = 'Search Email'
         icon = 'vibe.svg'
-        search_on_blank=True
+        search_on_blank=False
 
     # TODO: Add your categories
     example_category = ListViewCategory("Examples", 'help')
