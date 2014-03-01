@@ -1,0 +1,11 @@
+[Lens]
+DBusName=unity.singlet.lens.vibe
+DBusPath=/unity/singlet/lens/vibe
+Name=Vibe
+Icon=/usr/share/unity/lenses/vibe/unity-lens-vibe.svg
+Description=Vibe Lens
+SearchHint=Search Vibe
+#Shortcut=c
+
+[Desktop Entry]
+X-Ubuntu-Gettext-Domain=vibe
