@@ -1,3 +1,6 @@
+import urllib2
+import simplejson
+
 import logging
 import optparse
 
@@ -10,24 +13,37 @@ from singlet.lens import SingleScopeLens, IconViewCategory, ListViewCategory
 from vibe import vibeconfig
 
 class VibeLens(SingleScopeLens):
+    vibe = "https://vibeapp.co/api/v1"
 
     class Meta:
         name = 'vibe'
         description = 'Vibe Lens'
         search_hint = 'Search Email'
         icon = 'vibe.svg'
-        search_on_blank=False
+        search_on_blank=True
 
     # TODO: Add your categories
-    example_category = ListViewCategory("Examples", 'help')
+    user_category = ListViewCategory("Examples", 'help')
+
+    def vibe_query(self,search):
+        try:
+            search = search.replace(" ", "|")
+            url = ("%s/initial_data/?api_key=526541b013ef526c04c211a45a2fc6ec&email=%s&platform=chrome" % (self.vibe, search))
+            results = simplejson.loads(urllib2.urlopen(url).read())
+            print "Searching Vibe"
+            return results[1]
+        except (IOError, KeyError, urllib2.URLError, urllib2.HTTPError, simplejson.JSONDecodeError):
+            print "Error : Unable to search Vibe"
+            return []
 
     def search(self, search, results):
-        # TODO: Add your search results
-        results.append('https://wiki.ubuntu.com/Unity/Lenses/Singlet',
-                         'ubuntu-logo',
-                         self.example_category,
-                         "text/html",
-                         'Learn More',
-                         'Find out how to write your Unity Lens',
-                         'https://wiki.ubuntu.com/Unity/Lenses/Singlet')
-        pass
+        for info in self.vibe_query(search):
+            print info
+            results.append(info.websites,
+                        info.profile_picture,
+                        self.user_category,
+                        "text/html",
+                        info.name,
+                        info.bio,
+                        info.websites)
+    pass
